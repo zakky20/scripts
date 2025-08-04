@@ -1,0 +1,10 @@
+#!/bin/sh
+
+output="$(date '+%y%m%d-%H%M-%S').png"
+xclip_cmd="xclip -sel clip -t image/png"
+ocr_cmd="xclip -sel clip"
+
+case "$(printf "Select Area\nFullscreen" | dmenu -l 2)" in
+"Select Area") scrot -s pic-selected-"${output}" ;;
+"Fullscreen") scrot -"${output}" ;;
+esac
