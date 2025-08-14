@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+PASSWORD_LENGTH=20
+
+usage() {
+    echo "Usage: $0 [-l length] [-u] [-n] [-s]"
+    echo "  -l length  : Specify the length of the password (default: 12)"
+    echo "  -u         : Include uppercase letters"
+    echo "  -n         : Include numbers"
+    echo "  -s         : Include special characters"
+    exit 1
+}
+
+while getopts ":l:uns" opt; do
+    case $opt in
+    l)
+        PASSWORD_LENGTH=$OPTARG
+        if ! [[ "$PASSWORD_LENGTH" =~ ^[0-9]+$ ]]; then
+            echo "Error: Password length must be a positive integer."
+            exit 1
+        fi
+        ;;
+    u)
+        INCLUDE_UPPERCASE=true
+        ;;
+    n)
+        INCLUDE_NUMBERS=true
+        ;;
+    s)
+        INCLUDE_SPECIAL1=true
+        ;;
+    s)
+        INCLUDE_SPECIAL2=true
+        ;;
+    s)
+        INCLUDE_SPECIAL3=true
+        ;;
+    s)
+        INCLUDE_SPECIAL4=true
+        ;;
+    s)
+        INCLUDE_SPECIAL5=true
+        ;;
+    s)
+        INCLUDE_SPECIAL6=true
+        ;;
+    s)
+        INCLUDE_SPECIAL7=true
+        ;;
+    s)
+        INCLUDE_SPECIAL8=true
+        ;;
+    *)
+        usage
+        ;;
+    esac
+done
+
+CHAR_LOWER="abcdefghijklmnopqrstuvwxyz"
+CHAR_UPPER="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+CHAR_NUM="0123456789101112131415"
+CHAR_SPECIAL1="!@#"
+CHAR_SPECIAL2="$%^"
+CHAR_SPECIAL3="&*()"
+CHAR_SPECIAL4="-_="
+CHAR_SPECIAL5="+[]"
+CHAR_SPECIAL6="{};"
+CHAR_SPECIAL7=":,."
+CHAR_SPECIAL8="<>?"
+
+CHAR_SET=$CHAR_LOWER
+if [ "$INCLUDE_UPPERCASE" = true ]; then
+    CHAR_SET+=$CHAR_UPPER
+fi
+if [ "$INCLUDE_NUMBERS" = true ]; then
+    CHAR_SET+=$CHAR_NUM
+fi
+if [ "$INCLUDE_SPECIAL1" = true ]; then
+    CHAR_SET+=$CHAR_SPECIAL1
+fi
+if [ "$INCLUDE_SPECIAL2" = true ]; then
+    CHAR_SET+=$CHAR_SPECIAL2
+fi
+if [ "$INCLUDE_SPECIAL3" = true ]; then
+    CHAR_SET+=$CHAR_SPECIAL3
+fi
+if [ "$INCLUDE_SPECIAL4" = true ]; then
+    CHAR_SET+=$CHAR_SPECIAL4
+fi
+if [ "$INCLUDE_SPECIAL5" = true ]; then
+    CHAR_SET+=$CHAR_SPECIAL5
+fi
+if [ "$INCLUDE_SPECIAL6" = true ]; then
+    CHAR_SET+=$CHAR_SPECIAL6
+fi
+if [ "$INCLUDE_SPECIAL7" = true ]; then
+    CHAR_SET+=$CHAR_SPECIAL7
+fi
+if [ "$INCLUDE_SPECIAL8" = true ]; then
+    CHAR_SET+=$CHAR_SPECIAL8
+fi
+
+if [ -z "$CHAR_SET" ]; then
+    echo "Error: No character types selected for the password."
+    exit 1
+fi
+
+PASSWORD=$(</dev/urandom tr -dc "$CHAR_SET" | head -c "$PASSWORD_LENGTH")
+echo "Generated Password: $PASSWORD"

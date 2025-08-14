@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+while [ $pdf -z ]; do
+    category=$(ls ~/Documents/Pdfs | dmenu -i -l 100 -fn IosevkaNerdFont-11) && cd ~/Documents/Pdfs/"$category"
+    [ $category -z ] || pdf=$(ls ~/Documents/Pdfs/"$category" | dmenu -i -l 100 -fn IosevkaNerdFont-11)
+    [ $category -z ] && [ $pdf -z ] && exit
+done
+
+zathura ~/Documents/Pdfs/"$category"/"$pdf"

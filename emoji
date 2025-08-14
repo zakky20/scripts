@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+emoji="$(cat /home/zakky/.local/share/emoji | dmenu -l 15 | cut -d' ' -f1)"
+echo "$emoji" | tr "\n" " " | xclip -sel c

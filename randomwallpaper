@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+wall=$(find ~/Pictures/Wallpapers/ -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) | shuf -n 1)
+feh --bg-fill $wall

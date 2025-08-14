@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+DMENUEDITOR="nvim"
+
+options=(
+    "Dwm - $HOME/.config/suckless/dwm/config.h"
+    "Dmenu - $HOME/.config/suckless/dmenu/config.h"
+    "St - $HOME/.config/suckless/st/config.h"
+    "Slstatus - $HOME/.config/suckless/slstatus/config.h"
+    "Slock - $HOME/.config/suckless/slock/config.h"
+    "Zsh - $HOME/.zshrc"
+    "NeoVim - $HOME/.config/nvim/init.lua"
+    "FastFetch - $HOME/.config/fastfetch/config.jsonc"
+    "NeoFetch - $HOME/.config/neofetch/config.conf"
+    "Picom - $HOME/.config/picom/picom.conf"
+    "Dunst - $HOME/.config/dunst/dunstrc"
+    "Zathura - $HOME/.config/zathura/zathurarc"
+    "Lf - $HOME/.config/lf/lfrc"
+    "Cava - $HOME/.config/cava/config"
+)
+
+choice=$(printf '%s\n' "${options[@]}" | dmenu -i -l 15 -p 'Edit Config:')
+
+if [[ "$choice" == "quit" ]]; then
+    echo "Program Terminated." && exit 1
+
+elif [[ -n "$choice" ]]; then
+    cfg=$(echo "$choice" | awk '{print $NF}')
+    st -e "$DMENUEDITOR" "$cfg"
+
+else
+    echo "Program Terminated." && exit 1
+fi

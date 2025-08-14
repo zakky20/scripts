@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+command -v bc >/dev/null || {
+    notify-send "Error: bc not found"
+    exit 1
+}
+
+EXCHANGE_RATE=5.0633
+
+ron_to_euro() {
+    ron="$(echo "" | dmenu -c -sb "#1a1b26" -nf "#1a1b26" <&-)"
+    [ -z "$ron" ] && exit
+    echo "$ron" | grep -Eq '^[-+]?[0-9]+(\.[0-9]+)?$' || {
+        notify-send "Error: Not a valid number"
+        exit 1
+    }
+    euro=$(bc <<<"scale=4; $ron / $EXCHANGE_RATE")
+    euro_rounded=$(printf "%.2f" "$euro")
+    notify-send -h string:bgcolor:#1a1b26 "$ron RON is approximately €$euro_rounded"
+}
+
+euro_to_ron() {
+    euro="$(echo "" | dmenu -c -sb "#1a1b26" -nf "#1a1b26" <&-)"
+    [ -z "$euro" ] && exit
+    echo "$euro" | grep -Eq '^[-+]?[0-9]+(\.[0-9]+)?$' || {
+        notify-send "Error: Not a valid number"
+        exit 1
+    }
+    ron=$(bc <<<"scale=4; $euro * $EXCHANGE_RATE")
+    ron_rounded=$(printf "%.2f" "$ron")
+    notify-send -h string:bgcolor:#1a1b26 "€$euro is approximately $ron_rounded RON"
+}
+
+choice() {
+    choose=$(printf "RON to Euro\nEuro to RON" | dmenu -c -l 2 -i)
+    case "$choose" in
+    *Euro) ron_to_euro ;;
+    *RON) euro_to_ron ;;
+    *) exit ;;
+    esac
+}
+
+choice
