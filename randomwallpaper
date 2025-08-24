@@ -2,3 +2,5 @@
 
 wall=$(find ~/Pictures/Wallpapers/ -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) | shuf -n 1)
 feh --bg-fill $wall
+
+notify-send "Wallpaper Changed!" "$(basename "$wall")"
